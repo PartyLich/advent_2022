@@ -20,7 +20,10 @@ pub fn one(file_path: &str) -> usize {
 
 /// returns the sum of the largest 3 calories carried
 pub fn two(file_path: &str) -> usize {
-    todo!();
+    let mut counts: Vec<_> = read_file(file_path).split("\n\n").map(parse_elf).collect();
+    counts.sort();
+
+    return counts.iter().rev().take(3).sum();
 }
 
 #[cfg(test)]

@@ -1,9 +1,21 @@
 //! Solutions to 2022 day 1 problems
 //! --- Day 1: Calorie Counting ---
+use crate::read_file;
+
+fn parse_elf(elf: &str) -> usize {
+    return elf
+        .lines()
+        .map(|line| line.parse::<usize>().unwrap_or_default())
+        .sum();
+}
 
 /// returns the largest quantity of calories carried
 pub fn one(file_path: &str) -> usize {
-    todo!();
+    return read_file(file_path)
+        .split("\n\n")
+        .map(parse_elf)
+        .max()
+        .unwrap();
 }
 
 /// TODO

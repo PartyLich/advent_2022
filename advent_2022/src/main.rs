@@ -34,9 +34,11 @@ fn solve_day<T>(file: &'static str) -> impl Fn(Solver<T>) -> (T, Duration) {
     }
 }
 
-static SOLUTIONS: &[Option<Solution<String>>] = &[
-    None,
-];
+static SOLUTIONS: &[Option<Solution<String>>] = &[Some(to_solution!(
+    "01-1",
+    (day_01::one, "Calorie count"),
+    (day_01::two, "Top 3 Calories")
+))];
 
 /// run a single day
 // i disagree about this readability concern.

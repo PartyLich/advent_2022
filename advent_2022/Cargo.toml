@@ -1,0 +1,10 @@
+[package]
+name = "advent_2022"
+version = "0.1.0"
+authors = ["Arthur E. Jones <PartyLich@gmail.com>"]
+edition = "2021"
+
+[dependencies]
+regex = "1.4.5"
+lazy_static = "1.4.0"
+parser = { git = "https://github.com/PartyLich/advent2020" }

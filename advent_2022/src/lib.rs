@@ -16,7 +16,7 @@ pub fn read_file(file_path: &str) -> String {
     let path = Path::new(file_path);
     let display = path.display();
 
-    fs::read_to_string(&path).unwrap_or_else(|why| panic!("couldnt open {}: {}", display, why))
+    fs::read_to_string(path).unwrap_or_else(|why| panic!("couldnt open {}: {}", display, why))
 }
 
 /// AoC problem solver function pointer

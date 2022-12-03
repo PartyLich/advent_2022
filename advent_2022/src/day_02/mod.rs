@@ -47,9 +47,27 @@ pub fn one(file_path: &str) -> u32 {
         .sum();
 }
 
+fn score_two(pair: Vec<Shape>) -> u32 {
+    match pair[1] {
+        // X (Rock) means you need to lose
+        Shape::Rock => 1 + (((pair[0] as u32) + 1) % 3),
+        // Y (Paper) means you need to draw
+        Shape::Paper => 3 + pair[0] as u32,
+        // Z (Scissors) means you need to win
+        Shape::Scissor => {
+            let val = 1 + ((pair[0] as u32) % 3);
+            6 + val
+        }
+    }
+}
+
 /// returns the total score according to the strategy guide
 pub fn two(file_path: &str) -> u32 {
-    todo!();
+    read_file(file_path)
+        .lines()
+        .map(parse_line)
+        .map(score_two)
+        .sum()
 }
 
 #[cfg(test)]

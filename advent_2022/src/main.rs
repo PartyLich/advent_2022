@@ -42,7 +42,8 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
     )),
     Some(to_solution!(
         "02-1",
-        (day_02::one, "RPS")
+        (day_02::one, "RPS"),
+        (day_02::two, "RPS new rules")
     )),
 ];
 

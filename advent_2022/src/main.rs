@@ -45,7 +45,11 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_02::one, "RPS"),
         (day_02::two, "RPS new rules")
     )),
-    Some(to_solution!("03-1", (day_03::one, "Common character sum"))),
+    Some(to_solution!(
+        "03-1",
+        (day_03::one, "Common character sum"),
+        (day_03::two, "Common char in 3 lists")
+    )),
 ];
 
 /// run a single day

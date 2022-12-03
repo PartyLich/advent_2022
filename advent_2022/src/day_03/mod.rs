@@ -20,17 +20,19 @@ fn parse_line(line: &str) -> Rucksack {
 const LOWERCASE_OFFSET: u32 = 96;
 const UPPERCASE_OFFSET: u32 = 64;
 
-fn find_common(ruck: Rucksack) -> u32 {
-    let map: HashSet<_> = ruck.0.iter().collect();
-    let common = *ruck.1.iter().find(|&c| map.contains(c)).unwrap() as u32;
-
-    if common > 96 {
-        // Lowercase item types a through z have priorities 1 through 26.
-        common - LOWERCASE_OFFSET
+fn item_priority(item: char) -> u32 {
+    if item as u32 > 96 {
+        item as u32 - LOWERCASE_OFFSET
     } else {
-        // Uppercase item types A through Z have priorities 27 through 52.
-        common - UPPERCASE_OFFSET + 26
+        item as u32 - UPPERCASE_OFFSET + 26
     }
+}
+
+fn find_common(ruck: Rucksack) -> u32 {
+    let set: HashSet<_> = ruck.0.iter().collect();
+    let common = *ruck.1.iter().find(|&c| set.contains(c)).unwrap();
+
+    item_priority(common)
 }
 
 /// returns the sum of the priorities of item type that appears in both compartments of each
@@ -43,9 +45,24 @@ pub fn one(file_path: &str) -> u32 {
         .sum()
 }
 
+/// find the one item type that is common between all three rucksacks in each group.
+fn find_badge(rucks: &[Vec<char>]) -> u32 {
+    let set: HashSet<_> = rucks[0].iter().collect();
+    let set: HashSet<_> = rucks[1].iter().filter(|&c| set.contains(c)).collect();
+    let common = *rucks[2].iter().find(|&c| set.contains(c)).unwrap();
+
+    item_priority(common)
+}
+
 /// returns the sum of the badge priorities
-pub fn two(_file_path: &str) -> u32 {
-    todo!()
+pub fn two(file_path: &str) -> u32 {
+    read_file(file_path)
+        .lines()
+        .map(|line| line.chars().collect::<Vec<_>>())
+        .collect::<Vec<_>>()
+        .chunks(3)
+        .map(find_badge)
+        .sum()
 }
 
 #[cfg(test)]

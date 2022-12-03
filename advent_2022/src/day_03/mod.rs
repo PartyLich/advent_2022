@@ -43,6 +43,11 @@ pub fn one(file_path: &str) -> u32 {
         .sum()
 }
 
+/// returns the sum of the badge priorities
+pub fn two(_file_path: &str) -> u32 {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -52,6 +57,14 @@ mod test {
         let msg = "should return the the sum of the priorities of item type that appears in both compartments of each rucksack";
         let expected = 157;
         let actual = one("input/03-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return the sum of the badge priorities";
+        let expected = 70;
+        let actual = two("input/03-t.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

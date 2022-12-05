@@ -50,6 +50,7 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_03::one, "Common character sum"),
         (day_03::two, "Common char in 3 lists")
     )),
+    Some(to_solution!("04-1", (day_04::one, "Contained ranges"))),
 ];
 
 /// run a single day

@@ -37,9 +37,24 @@ pub fn one(file_path: &str) -> usize {
         .count()
 }
 
+/// returns true if r0 overlaps r1
+fn is_overlapping(r0: Range, r1: Range) -> bool {
+    r0.1 >= r1.0 && r0.1 <= r1.1
+}
+
 /// returns the number of ranges that overlap their partner.
-pub fn two(file_path: &str) -> u32 {
-    todo!()
+pub fn two(file_path: &str) -> usize {
+    read_file(file_path)
+        .lines()
+        .map(parse_line)
+        .filter_map(|ranges| {
+            if is_overlapping(ranges[0], ranges[1]) || is_overlapping(ranges[1], ranges[0]) {
+                Some(())
+            } else {
+                None
+            }
+        })
+        .count()
 }
 
 #[cfg(test)]
@@ -61,6 +76,15 @@ mod test {
         let expected = 2;
         let actual = one("input/04-t.txt");
         assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn overlap() {
+        let msg = "should return true if r0 overlaps r1";
+        assert!(is_overlapping(Range(5, 7), Range(7, 9)), "{}", msg);
+        assert!(is_overlapping(Range(3, 7), Range(2, 8)), "{}", msg);
+        assert!(is_overlapping(Range(6, 6), Range(4, 6)), "{}", msg);
+        assert!(!is_overlapping(Range(2, 4), Range(5, 6)), "{}", msg);
     }
 
     #[test]

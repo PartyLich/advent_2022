@@ -60,6 +60,11 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_05::one, "CrateMover 9000"),
         (day_05::two, "CrateMover 9001")
     )),
+    Some(to_solution!(
+        "06-1",
+        (day_06::one, "signal window"),
+        (day_06::two, "bigger signal window")
+    )),
 ];
 
 /// run a single day

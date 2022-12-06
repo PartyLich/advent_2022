@@ -38,22 +38,22 @@ fn find_start(size: usize) -> impl Fn(Vec<char>) -> usize {
     }
 }
 
-/// returns the number of characters processed before the first start-of-packet marker
-pub fn one(file_path: &str) -> usize {
+fn solve(file_path: &str, size: usize) -> usize {
     read_file(file_path)
         .lines()
         .map(parse_line)
-        .map(find_start(4))
+        .map(find_start(size))
         .sum()
+}
+
+/// returns the number of characters processed before the first start-of-packet marker
+pub fn one(file_path: &str) -> usize {
+    solve(file_path, 4)
 }
 
 /// returns the number of characters processed before the first start-of-message marker
 pub fn two(file_path: &str) -> usize {
-    read_file(file_path)
-        .lines()
-        .map(parse_line)
-        .map(find_start(14))
-        .sum()
+    solve(file_path, 14)
 }
 
 #[cfg(test)]

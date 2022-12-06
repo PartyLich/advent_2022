@@ -4,7 +4,6 @@ use std::collections::HashMap;
 
 use crate::read_file;
 
-/// 
 fn parse_line(line: &str) -> Vec<char> {
     line.chars().collect()
 }
@@ -40,6 +39,15 @@ pub fn one(file_path: &str) -> usize {
         .sum()
 }
 
+fn find_message(signal: Vec<char>, size: usize) -> usize {
+    todo!()
+}
+
+/// returns the number of characters processed before the first start-of-message marker
+pub fn two(file_path: &str) -> usize {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -55,6 +63,22 @@ mod test {
         ];
         for (input, expected) in cases {
             let actual = find_start(parse_line(input));
+            assert_eq!(actual, expected, "{}", msg);
+        }
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return the number of characters processed before the first start-of-message marker";
+        let cases = [
+            ("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19),
+            ("bvwbjplbgvbhsrlpgdmjqwftvncz", 23),
+            ("nppdvjthqldpwncqszvftbrmjlhg", 23),
+            ("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29),
+            ("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26),
+        ];
+        for (input, expected) in cases {
+            let actual = find_message(parse_line(input), 14);
             assert_eq!(actual, expected, "{}", msg);
         }
     }

@@ -84,6 +84,11 @@ pub fn one(file_path: &str) -> String {
         .into()
 }
 
+/// returns the crates on top of each stack
+pub fn two(file_path: &str) -> String {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -93,6 +98,14 @@ mod test {
         let msg = "should return the crates on top of each stack";
         let expected = "CMZ";
         let actual = one("input/05-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return the crates on top of each stack";
+        let expected = "MCD";
+        let actual = two("input/05-t.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

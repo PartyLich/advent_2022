@@ -1,5 +1,5 @@
-//! Solutions to 2018 day 6 problems
-//!
+//! Solutions to 2020 day 6 problems
+//! --- Day 6: Tuning Trouble ---
 use std::collections::HashMap;
 
 use crate::read_file;

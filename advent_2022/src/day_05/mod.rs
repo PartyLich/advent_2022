@@ -84,9 +84,32 @@ pub fn one(file_path: &str) -> String {
         .into()
 }
 
+fn process_two(mut tower: Towers, instruction: &Instruction) -> Towers {
+    let start = tower[instruction.1].len() - instruction.0;
+    let moved_crates: Vec<_> = tower[instruction.1].drain(start..).collect();
+
+    tower[instruction.2].extend_from_slice(&moved_crates);
+
+    tower
+}
+
 /// returns the crates on top of each stack
 pub fn two(file_path: &str) -> String {
-    todo!()
+    let input = read_file(file_path);
+    let (tower_str, instruction_str) = input
+        .split_once("\n\n")
+        .expect("Failed to parse input file.");
+    let instructions = parse_instructions(instruction_str);
+    let towers = parse_towers(tower_str);
+
+    instructions
+        .iter()
+        .fold(towers, process_two)
+        .iter()
+        .filter_map(|tower| tower.last())
+        .collect::<String>()
+        .trim()
+        .into()
 }
 
 #[cfg(test)]

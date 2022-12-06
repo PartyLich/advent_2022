@@ -55,6 +55,7 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_04::one, "Contained ranges"),
         (day_04::two, "Overlapping ranges")
     )),
+    Some(to_solution!("05-1", (day_05::one, "CrateMover 9000"))),
 ];
 
 /// run a single day

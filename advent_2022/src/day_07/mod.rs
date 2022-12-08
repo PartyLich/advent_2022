@@ -132,6 +132,11 @@ pub fn one(file_path: &str) -> u32 {
         .sum()
 }
 
+/// returns the size of the smallest directory that will free enough space
+pub fn two(file_path: &str) -> u32 {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -160,6 +165,14 @@ mod test {
         let msg = "should return the sum of all directories that are of size <= 100000.";
         let expected = 95437;
         let actual = one("input/07-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return the size of the smallest directory that will free enough space";
+        let expected = 24933642;
+        let actual = two("input/07-t.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

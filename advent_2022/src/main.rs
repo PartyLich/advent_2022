@@ -67,7 +67,8 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
     )),
     Some(to_solution!(
         "07-1",
-        (day_07::one, "recursive directory sizes")
+        (day_07::one, "recursive directory sizes"),
+        (day_07::two, "free up space")
     )),
 ];
 

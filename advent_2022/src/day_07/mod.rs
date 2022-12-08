@@ -134,7 +134,27 @@ pub fn one(file_path: &str) -> u32 {
 
 /// returns the size of the smallest directory that will free enough space
 pub fn two(file_path: &str) -> u32 {
-    todo!()
+    const MAX_SPACE: u32 = 70000000;
+    const REQUIRED_SPACE: u32 = 30000000;
+    let input = read_file(file_path);
+    let fs = parse_terminal(&input);
+
+    let root_size = size(fs.get("").unwrap());
+    let available_space = MAX_SPACE - root_size;
+    let needed_space = REQUIRED_SPACE - available_space;
+
+    fs.iter()
+        .filter_map(|(_name, entry)| {
+            let sum = size(entry);
+
+            if sum >= needed_space {
+                Some(sum)
+            } else {
+                None
+            }
+        })
+        .min()
+        .unwrap()
 }
 
 #[cfg(test)]

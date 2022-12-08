@@ -65,6 +65,10 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_06::one, "signal window"),
         (day_06::two, "bigger signal window")
     )),
+    Some(to_solution!(
+        "07-1",
+        (day_07::one, "recursive directory sizes")
+    )),
 ];
 
 /// run a single day

@@ -15,6 +15,41 @@ impl From<char> for Height {
     }
 }
 
+fn is_visible(map: &[Vec<Height>], map_row: usize) -> impl Fn((usize, &Height)) -> Option<()> + '_ {
+    move |(map_col, &Height(height))| {
+        // check up
+        if map.iter().take(map_row).all(|row| row[map_col].0 < height) {
+            return Some(());
+        }
+
+        // check down
+        if map
+            .iter()
+            .skip(map_row + 1)
+            .all(|row| row[map_col].0 < height)
+        {
+            return Some(());
+        }
+
+        let row = &map[map_row];
+        // check right
+        if row
+            .iter()
+            .skip(map_col + 1)
+            .all(|&Height(tree)| tree < height)
+        {
+            return Some(());
+        }
+
+        // check left
+        if row.iter().take(map_col).all(|&Height(tree)| tree < height) {
+            return Some(());
+        }
+
+        None
+    }
+}
+
 /// returns the number of trees visible from outside the grid
 pub fn one(file_path: &str) -> u32 {
     let map = load_terrain::<Height>(file_path);
@@ -32,45 +67,7 @@ pub fn one(file_path: &str) -> u32 {
                 .enumerate()
                 .skip(1)
                 .take(cols - 2)
-                .filter_map(|(map_col, &height)| {
-                    // check up
-                    let mut max = 0;
-                    for r in (0..(map_row)).rev() {
-                        max = max.max(map[r][map_col].0);
-                    }
-                    if max < height.0 {
-                        return Some(());
-                    }
-
-                    // check down
-                    let mut max = 0;
-                    for r in (map_row + 1)..rows {
-                        max = max.max(map[r][map_col].0);
-                    }
-                    if max < height.0 {
-                        return Some(());
-                    }
-
-                    // check right
-                    let mut max = 0;
-                    for c in (map_col + 1)..cols {
-                        max = max.max(map[map_row][c].0);
-                    }
-                    if max < height.0 {
-                        return Some(());
-                    }
-
-                    // check left
-                    let mut max = 0;
-                    for c in (0..(map_col)).rev() {
-                        max = max.max(map[map_row][c].0);
-                    }
-                    if max < height.0 {
-                        return Some(());
-                    }
-
-                    None
-                })
+                .filter_map(is_visible(&map, map_row))
                 .count()
         })
         .sum();

@@ -11,7 +11,7 @@ pub mod day_03;
 pub mod day_04;
 pub mod day_05;
 pub mod day_06;
-// pub mod day_07;
+pub mod day_07;
 
 /// read the specified file at `file_path` into a `String`
 ///

@@ -12,6 +12,7 @@ pub mod day_04;
 pub mod day_05;
 pub mod day_06;
 pub mod day_07;
+pub mod day_08;
 
 /// read the specified file at `file_path` into a `String`
 ///
@@ -21,6 +22,17 @@ pub fn read_file(file_path: &str) -> String {
     let display = path.display();
 
     fs::read_to_string(path).unwrap_or_else(|why| panic!("couldnt open {}: {}", display, why))
+}
+
+/// deserializes a 2d vec of [`T`] from the specified file path
+pub fn load_terrain<T>(file_path: &str) -> Vec<Vec<T>>
+where
+    T: From<char>,
+{
+    read_file(file_path)
+        .lines()
+        .map(|line| line.chars().map(From::from).collect::<Vec<_>>())
+        .collect()
 }
 
 /// AoC problem solver function pointer

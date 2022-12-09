@@ -80,7 +80,63 @@ pub fn one(file_path: &str) -> u32 {
 
 /// returns the largest number of trees visible from a tree to the exterior in cardinal directions
 pub fn two(file_path: &str) -> usize {
-    todo!()
+    let map = load_terrain::<Height>(file_path);
+    let rows = map.len();
+    let cols = map[0].len();
+
+    map.iter()
+        .enumerate()
+        .skip(1)
+        .take(rows - 2)
+        .map(|(map_row, row)| {
+            row.iter()
+                .enumerate()
+                .skip(1)
+                .take(cols - 2)
+                .map(|(map_col, Height(height))| {
+                    // check up
+                    let mut up = 0;
+                    for r in (0..map_row).rev() {
+                        up += 1;
+                        if map[r][map_col].0 >= *height {
+                            break;
+                        }
+                    }
+
+                    // check down
+                    let mut down = 0;
+                    for row in map.iter().skip(map_row + 1) {
+                        down += 1;
+                        if row[map_col].0 >= *height {
+                            break;
+                        }
+                    }
+
+                    // check right
+                    let mut right = 0;
+                    for Height(tree) in row[(map_col + 1)..].iter() {
+                        right += 1;
+                        if *tree >= *height {
+                            break;
+                        }
+                    }
+
+                    // check left
+                    let mut left = 0;
+                    for Height(tree) in row[..(map_col)].iter().rev() {
+                        left += 1;
+                        if *tree >= *height {
+                            break;
+                        }
+                    }
+
+                    left * right * up * down
+                })
+                .max()
+                .unwrap()
+        })
+        .max()
+        .unwrap()
 }
 
 #[cfg(test)]

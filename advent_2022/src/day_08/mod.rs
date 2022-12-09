@@ -78,6 +78,11 @@ pub fn one(file_path: &str) -> u32 {
     edge_count + interior_count as u32
 }
 
+/// returns the largest number of trees visible from a tree to the exterior in cardinal directions
+pub fn two(file_path: &str) -> usize {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -87,6 +92,14 @@ mod test {
         let msg = "should return the number of trees visible from outside the grid";
         let expected = 21;
         let actual = one("input/08-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return the largest number of trees visible from a tree to the exterior in cardinal directions";
+        let expected = 8;
+        let actual = two("input/08-t.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

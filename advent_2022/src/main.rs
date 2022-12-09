@@ -70,6 +70,7 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_07::one, "recursive directory sizes"),
         (day_07::two, "free up space")
     )),
+    Some(to_solution!("08-1", (day_08::one, "tree visibility"))),
 ];
 
 /// run a single day

@@ -22,6 +22,31 @@ fn parse_line(input: &str) -> Result<Option<isize>, String> {
     }
 }
 
+fn exec(
+    (mut result, mut cycle, mut reg_x): ([isize; 240], usize, isize),
+    op: &Option<isize>,
+) -> ([isize; 240], usize, isize) {
+    match op {
+        Some(value) => {
+            for _ in 0..2 {
+                if cycle < result.len() {
+                    result[cycle - 1] = reg_x;
+                }
+                cycle += 1;
+            }
+            reg_x += value;
+        }
+        None => {
+            if cycle < result.len() {
+                result[cycle - 1] = reg_x;
+            }
+            cycle += 1;
+        }
+    };
+
+    (result, cycle, reg_x)
+}
+
 /// returns the sum of the signal strength during the 20th, 60th, 100th, 140th,
 /// 180th, and 220th cycles
 pub fn one(file_path: &str) -> isize {
@@ -30,32 +55,7 @@ pub fn one(file_path: &str) -> isize {
         .map(parse_line)
         .collect::<Result<Vec<_>, _>>()
         .unwrap();
-
-    let mut reg_x = 1;
-    let mut cycle = 1;
-    let mut result: [isize; 221] = [0; 221];
-
-    let exec = |op: &Option<isize>| {
-        match op {
-            Some(value) => {
-                for _ in 0..2 {
-                    if cycle < result.len() {
-                        result[cycle - 1] = reg_x;
-                    }
-                    cycle += 1;
-                }
-                reg_x += value;
-            }
-            None => {
-                if cycle < result.len() {
-                    result[cycle - 1] = reg_x;
-                }
-                cycle += 1;
-            }
-        };
-    };
-
-    ops.iter().for_each(exec);
+    let result = ops.iter().fold(([0; 240], 1, 1), exec).0;
 
     result
         .iter()
@@ -73,32 +73,7 @@ pub fn two(file_path: &str) -> String {
         .map(parse_line)
         .collect::<Result<Vec<_>, _>>()
         .unwrap();
-
-    let mut reg_x = 1;
-    let mut cycle = 1;
-    let mut result: [isize; 240] = [0; 240];
-
-    let exec = |op: &Option<isize>| {
-        match op {
-            Some(value) => {
-                for _ in 0..2 {
-                    if cycle < result.len() {
-                        result[cycle - 1] = reg_x;
-                    }
-                    cycle += 1;
-                }
-                reg_x += value;
-            }
-            None => {
-                if cycle < result.len() {
-                    result[cycle - 1] = reg_x;
-                }
-                cycle += 1;
-            }
-        };
-    };
-
-    ops.iter().for_each(exec);
+    let result = ops.iter().fold(([0; 240], 1, 1), exec).0;
 
     const WIDTH: usize = 40;
 

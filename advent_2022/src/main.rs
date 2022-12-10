@@ -75,6 +75,7 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_08::one, "tree visibility"),
         (day_08::two, "alternate tree visibility")
     )),
+    Some(to_solution!("09-1", (day_09::one, "unique tail positions"))),
 ];
 
 /// run a single day

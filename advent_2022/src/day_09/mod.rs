@@ -83,6 +83,11 @@ pub fn one(file_path: &str) -> usize {
     visited.len()
 }
 
+/// returns tail positions with a longer rope
+pub fn two(file_path: &str) -> usize {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -92,6 +97,22 @@ mod test {
         let msg = "should return the number of positions the tail visited at least once";
         let expected = 13;
         let actual = one("input/09-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return tail positions with a longer rope";
+        let expected = 1;
+        let actual = two("input/09-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two_larger() {
+        let msg = "should return tail positions with a longer rope";
+        let expected = 36;
+        let actual = two("input/09-t2.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

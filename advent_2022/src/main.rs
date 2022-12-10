@@ -80,7 +80,11 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_09::one, "unique tail positions"),
         (day_09::two, "long tail positions")
     )),
-    Some(to_solution!("10-1", (day_10::one, "signal strength"))),
+    Some(to_solution!(
+        "10-1",
+        (day_10::one, "signal strength"),
+        (day_10::two, "scanline output")
+    )),
 ];
 
 /// run a single day

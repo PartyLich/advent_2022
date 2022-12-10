@@ -68,7 +68,56 @@ pub fn one(file_path: &str) -> isize {
 
 /// returns the rendered screen
 pub fn two(file_path: &str) -> String {
-    todo!()
+    let ops: Vec<_> = read_file(file_path)
+        .lines()
+        .map(parse_line)
+        .collect::<Result<Vec<_>, _>>()
+        .unwrap();
+
+    let mut reg_x = 1;
+    let mut cycle = 1;
+    let mut result: [isize; 240] = [0; 240];
+
+    let exec = |op: &Option<isize>| {
+        match op {
+            Some(value) => {
+                for _ in 0..2 {
+                    if cycle < result.len() {
+                        result[cycle - 1] = reg_x;
+                    }
+                    cycle += 1;
+                }
+                reg_x += value;
+            }
+            None => {
+                if cycle < result.len() {
+                    result[cycle - 1] = reg_x;
+                }
+                cycle += 1;
+            }
+        };
+    };
+
+    ops.iter().for_each(exec);
+
+    const WIDTH: usize = 40;
+
+    result
+        .iter()
+        .enumerate()
+        .map(|(idx, &value)| {
+            let col = (idx % WIDTH) as isize;
+            if (value - 1..=value + 1).contains(&col) {
+                '#'
+            } else {
+                '.'
+            }
+        })
+        .collect::<Vec<_>>()
+        .chunks(WIDTH)
+        .map(|line| line.iter().collect())
+        .collect::<Vec<String>>()
+        .join("\n")
 }
 
 #[cfg(test)]

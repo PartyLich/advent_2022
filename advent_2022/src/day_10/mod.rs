@@ -66,6 +66,11 @@ pub fn one(file_path: &str) -> isize {
         .sum()
 }
 
+/// returns the rendered screen
+pub fn two(file_path: &str) -> String {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -75,6 +80,19 @@ mod test {
         let msg = "should return the sum of the signal strength during the 20th, 60th, 100th, 140th, 180th, and 220th cycles";
         let expected = 13140;
         let actual = one("input/10-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return rendered screen";
+        let expected = r"##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....";
+        let actual = two("input/10-t.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

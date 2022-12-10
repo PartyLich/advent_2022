@@ -101,7 +101,41 @@ pub fn one(file_path: &str) -> usize {
 
 /// returns tail positions with a longer rope
 pub fn two(file_path: &str) -> usize {
-    todo!()
+    let input = read_file(file_path);
+    let instructions = input
+        .lines()
+        .map(parse_line)
+        .collect::<Result<Vec<_>, _>>()
+        .unwrap();
+
+    let mut visited: HashSet<Direction> = Default::default();
+    let mut head = Direction(0, 0);
+    let mut tail = Vec::with_capacity(9);
+    for _ in 0..9 {
+        tail.push(Direction(0, 0));
+    }
+
+    visited.insert(tail[8]);
+
+    for (dir, count) in instructions {
+        for _ in 0..count {
+            head = head + dir;
+            tail = tail
+                .iter()
+                .enumerate()
+                .fold(Vec::with_capacity(9), |mut acc, (idx, &next)| {
+                    let lead = if idx == 0 { head } else { acc[idx - 1] };
+                    let result = follow(lead, next);
+                    acc.push(result);
+
+                    acc
+                });
+
+            visited.insert(tail[8]);
+        }
+    }
+
+    visited.len()
 }
 
 #[cfg(test)]

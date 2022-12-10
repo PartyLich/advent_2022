@@ -47,6 +47,31 @@ fn parse_line(input: &str) -> Result<(Direction, isize), String> {
     }
 }
 
+fn follow(head: Direction, tail: Direction) -> Direction {
+    let dist = head - tail;
+    if (dist.0).abs() < 2 && (dist.1).abs() < 2 {
+        return tail;
+    }
+
+    let mut tail = tail;
+    let x_step = dist.0.signum();
+    let y_step = dist.1.signum();
+
+    if (dist.1).abs() == 0 {
+        // horizontal
+        tail.0 += x_step;
+    } else if (dist.0).abs() == 0 {
+        // vertical
+        tail.1 += y_step;
+    } else {
+        // diagonal
+        tail.0 += x_step;
+        tail.1 += y_step;
+    }
+
+    tail
+}
+
 /// returns the number of positions the tail visited at least once
 pub fn one(file_path: &str) -> usize {
     let input = read_file(file_path);
@@ -65,16 +90,7 @@ pub fn one(file_path: &str) -> usize {
     for (dir, count) in instructions {
         for _ in 0..count {
             head = head + dir;
-
-            let dist = head - tail;
-            if (dist.0).abs() == 2 {
-                tail = tail + dir;
-                tail.1 = head.1;
-            }
-            if (dist.1).abs() == 2 {
-                tail = tail + dir;
-                tail.0 = head.0;
-            }
+            tail = follow(head, tail);
 
             visited.insert(tail);
         }
@@ -105,6 +121,14 @@ mod test {
         let msg = "should return tail positions with a longer rope";
         let expected = 1;
         let actual = two("input/09-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn test_follow() {
+        let msg = "should return next position according to rules";
+        let expected = Direction(4, 1);
+        let actual = follow(Direction(5, 1), Direction(3, 0));
         assert_eq!(actual, expected, "{}", msg);
     }
 

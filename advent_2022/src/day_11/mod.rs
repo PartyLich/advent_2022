@@ -7,6 +7,8 @@ use parser::three::lib::{
     between, choice, digit_char, keep_second, one_or_more, p_char, p_int, p_string, sep_by, spaces,
 };
 
+use crate::read_file;
+
 type Op = Box<dyn Fn(usize) -> usize>;
 
 fn add(op_value: usize) -> Op {
@@ -87,10 +89,46 @@ impl FromStr for Monkey {
     }
 }
 
+type State = (Vec<Monkey>, Vec<usize>);
+
+fn play_turn((mut monkeys, mut count): State) -> State {
+    for idx in 0..monkeys.len() {
+        let used: Vec<_> = monkeys[idx].items.drain(..).collect();
+        used.into_iter().for_each(|item| {
+            // cant use the iterator directly without a double mutable borrow
+            let new_value = (monkeys[idx].operation)(item) / 3;
+            let destination = if new_value % monkeys[idx].test == 0 {
+                monkeys[idx].target.0
+            } else {
+                monkeys[idx].target.1
+            };
+
+            count[idx] += 1;
+            monkeys[destination].items.push(new_value);
+        });
+    }
+
+    (monkeys, count)
+}
 
 /// returns the product of the two largest inspection counts after 20 rounds
-pub fn one(file_path: &str) -> isize {
-    todo!()
+pub fn one(file_path: &str) -> usize {
+    const ROUNDS: usize = 20;
+
+    let mut monkeys: Vec<Monkey> = read_file(file_path)
+        .split("\n\n")
+        .map(FromStr::from_str)
+        .collect::<Result<Vec<_>, _>>()
+        .unwrap();
+    let mut counts = vec![0; monkeys.len()];
+
+    for _ in 0..ROUNDS {
+        (monkeys, counts) = play_turn((monkeys, counts));
+    }
+
+    counts.sort();
+
+    counts.iter().rev().take(2).product()
 }
 
 #[cfg(test)]

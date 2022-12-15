@@ -109,6 +109,12 @@ pub fn one(file_path: &str) -> u32 {
     *distance_map.get(&start).unwrap()
 }
 
+/// returns the shortest path length from any square with elevation a to the end
+/// position
+pub fn two(file_path: &str) -> u32 {
+    todo()!
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -118,6 +124,14 @@ mod test {
         let msg = "should return shortest path length from start to end location";
         let expected = 31;
         let actual = one("input/12-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return shortest path from any valid start point";
+        let expected = 29;
+        let actual = two("input/12-t.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

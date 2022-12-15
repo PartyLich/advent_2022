@@ -9,7 +9,7 @@ use crate::read_file;
 
 /// Grid direction
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-struct Direction(isize, isize);
+pub struct Direction(pub isize, pub isize);
 
 impl Add for Direction {
     type Output = Self;

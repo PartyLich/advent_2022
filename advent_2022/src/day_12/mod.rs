@@ -112,7 +112,21 @@ pub fn one(file_path: &str) -> u32 {
 /// returns the shortest path length from any square with elevation a to the end
 /// position
 pub fn two(file_path: &str) -> u32 {
-    todo()!
+    let input = read_file(file_path);
+    let (map, _, end) = parse_map(&input).unwrap();
+    let distance_map = dijkstra(&map, end);
+
+    *map.iter()
+        .filter_map(|(position, &height)| {
+            if height.0 == 1 {
+                // some of the map points may be non-traversable
+                Some(distance_map.get(position).unwrap_or(&u32::MAX))
+            } else {
+                None
+            }
+        })
+        .min()
+        .unwrap()
 }
 
 #[cfg(test)]

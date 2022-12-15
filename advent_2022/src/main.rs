@@ -85,7 +85,11 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_10::one, "signal strength"),
         (day_10::two, "scanline output")
     )),
-    Some(to_solution!("12-1", (day_12::one, "Shortest path"))),
+    Some(to_solution!(
+        "12-1",
+        (day_12::one, "Shortest Path"),
+        (day_12::two, "Shortest of multiple paths")
+    )),
 ];
 
 /// run a single day

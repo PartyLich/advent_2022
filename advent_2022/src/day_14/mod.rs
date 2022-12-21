@@ -87,6 +87,11 @@ pub fn one(file_path: &str) -> u32 {
     count - 1
 }
 
+/// returns the number of units of sand that come to rest before one stops at 500, 0
+pub fn two(file_path: &str) -> usize {
+    todo!()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -96,6 +101,14 @@ mod test {
         let msg = "should return the number of units of sand come to rest before sand starts flowing into the abyss below";
         let expected = 24;
         let actual = one("input/14-t.txt");
+        assert_eq!(actual, expected, "{}", msg);
+    }
+
+    #[test]
+    fn part_two() {
+        let msg = "should return the number of units of sand that come to rest before one stops at 500, 0";
+        let expected = 93;
+        let actual = two("input/14-t.txt");
         assert_eq!(actual, expected, "{}", msg);
     }
 }

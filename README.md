@@ -11,3 +11,4 @@ Project contains a single package in a cargo workspace.
 Notes:
 - day 07: I made an incorrect (implicit) assumption about directory name uniqueness, and wasted a
   bunch of time as a result.
+- day 14: brainless and a bit slow, but I don't have time to look for speedups at the moment.

@@ -87,9 +87,56 @@ pub fn one(file_path: &str) -> u32 {
     count - 1
 }
 
+fn step_two(mut map: HashSet<Direction>, max_y: isize) -> (HashSet<Direction>, bool) {
+    const START: Direction = Direction(500, 0);
+    let can_move = |position: Direction| {
+        let next = position + Direction(0, 1);
+        if next.1 >= max_y {
+            return None;
+        }
+
+        if !map.contains(&next) {
+            // down
+            return Some(next);
+        }
+
+        let next = position + Direction(-1, 1);
+        if !map.contains(&next) {
+            // down left
+            return Some(next);
+        }
+
+        let next = position + Direction(1, 1);
+        if !map.contains(&next) {
+            // down right
+            return Some(next);
+        }
+
+        None
+    };
+
+    let mut current_pos = START;
+    while let Some(new_pos) = can_move(current_pos) {
+        current_pos = new_pos;
+    }
+    let is_new = map.insert(current_pos);
+
+    (map, is_new)
+}
+
 /// returns the number of units of sand that come to rest before one stops at 500, 0
-pub fn two(file_path: &str) -> usize {
-    todo!()
+pub fn two(file_path: &str) -> u32 {
+    let mut map: HashSet<Direction> = read_file(file_path).lines().flat_map(parse_line).collect();
+    let max_y = map.iter().fold(0, |acc, next| next.1.max(acc)) + 2;
+    let mut count = 0;
+
+    let mut flowing = true;
+    while flowing {
+        count += 1;
+        (map, flowing) = step_two(map, max_y);
+    }
+
+    count - 1
 }
 
 #[cfg(test)]

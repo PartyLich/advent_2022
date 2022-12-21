@@ -92,7 +92,11 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_12::two, "Shortest of multiple paths")
     )),
     None,
-    Some(to_solution!("14-1", (day_14::one, "sand fall"))),
+    Some(to_solution!(
+        "14-1",
+        (day_14::one, "sand fall"),
+        (day_14::two, "sand fall with floor")
+    )),
 ];
 
 /// run a single day

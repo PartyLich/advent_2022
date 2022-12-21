@@ -17,7 +17,8 @@ fn parse_line(line: &str) -> Rucksack {
     )
 }
 
-const LOWERCASE_OFFSET: u32 = 96;
+/// Ascii offset for lowercase alph chars
+pub const LOWERCASE_OFFSET: u32 = 96;
 const UPPERCASE_OFFSET: u32 = 64;
 
 fn item_priority(item: char) -> u32 {

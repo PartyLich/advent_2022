@@ -8,8 +8,8 @@ use parser::three::lib::{choice, keep_first, p_char, p_int};
 use crate::read_file;
 
 /// Grid direction
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-struct Direction(isize, isize);
+#[derive(Clone, Copy, Default, Debug, Eq, Hash, PartialEq)]
+pub struct Direction(pub isize, pub isize);
 
 impl Add for Direction {
     type Output = Self;

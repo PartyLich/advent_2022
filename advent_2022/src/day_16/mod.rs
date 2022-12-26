@@ -1,6 +1,6 @@
 //! Solutions to 2020 day 16 problems
 //! --- Day 16: Proboscidea Volcanium ---
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet, VecDeque};
 
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -34,6 +34,61 @@ fn parse_line(line: &str) -> (&str, Valve) {
             Some((key, Valve { rate, neighbors }))
         })
         .unwrap()
+}
+
+fn find_distances<'a>(mut map: HashMap<&'a str, Valve<'a>>) -> HashMap<&'a str, Valve<'a>> {
+    let keys: Vec<_> = map.keys().cloned().collect();
+
+    for key in keys {
+        let mut queue = VecDeque::with_capacity(map.len());
+        let mut visited = HashSet::with_capacity(map.len());
+
+        queue.push_back((key, key));
+
+        while !queue.is_empty() {
+            let (current, parent) = queue.pop_front().unwrap();
+            if !visited.insert(current) {
+                continue;
+            }
+
+            let neighbors: Vec<_> = map
+                .get(current)
+                .unwrap()
+                .neighbors
+                .iter()
+                .filter_map(|(&key, val)| if *val == 1 { Some(key) } else { None })
+                .collect();
+            for neighbor in neighbors {
+                if visited.contains(neighbor) {
+                    continue;
+                }
+                queue.push_back((neighbor, current));
+
+                let distance = map
+                    .get(key)
+                    .map(|valve| {
+                        let prev = valve.neighbors.get(neighbor).unwrap_or(&u32::MAX);
+                        let distance = valve
+                            .neighbors
+                            .get(current)
+                            .map(|d| d + 1)
+                            .unwrap_or(u32::MAX);
+
+                        distance.min(*prev)
+                    })
+                    .unwrap();
+
+                map.entry(key).and_modify(|valve| {
+                    valve.neighbors.insert(neighbor, distance);
+                });
+                map.entry(neighbor).and_modify(|valve| {
+                    valve.neighbors.insert(key, distance);
+                });
+            }
+        }
+    }
+
+    map
 }
 
 /// returns the max pressure releasable in 30 minutes.

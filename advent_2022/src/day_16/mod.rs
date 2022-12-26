@@ -5,6 +5,8 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use lazy_static::lazy_static;
 use regex::Regex;
 
+use crate::read_file;
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Valve<'a> {
     rate: u32,
@@ -43,10 +45,10 @@ fn find_distances<'a>(mut map: HashMap<&'a str, Valve<'a>>) -> HashMap<&'a str, 
         let mut queue = VecDeque::with_capacity(map.len());
         let mut visited = HashSet::with_capacity(map.len());
 
-        queue.push_back((key, key));
+        queue.push_back(key);
 
         while !queue.is_empty() {
-            let (current, parent) = queue.pop_front().unwrap();
+            let current = queue.pop_front().unwrap();
             if !visited.insert(current) {
                 continue;
             }
@@ -62,7 +64,7 @@ fn find_distances<'a>(mut map: HashMap<&'a str, Valve<'a>>) -> HashMap<&'a str, 
                 if visited.contains(neighbor) {
                     continue;
                 }
-                queue.push_back((neighbor, current));
+                queue.push_back(neighbor);
 
                 let distance = map
                     .get(key)
@@ -91,9 +93,75 @@ fn find_distances<'a>(mut map: HashMap<&'a str, Valve<'a>>) -> HashMap<&'a str, 
     map
 }
 
+fn solve_one<'a>(map: &HashMap<&'a str, Valve<'a>>, start: &str, minutes: u32) -> u32 {
+    // evaluate each target branch
+    fn helper(
+        map: &HashMap<&str, Valve>,
+        mut minutes: u32,
+        mut total: u32,
+        mut remain: HashSet<&str>,
+        start: &str,
+        target: &str,
+    ) -> u32 {
+        let rate = map.get(target).unwrap().rate;
+        let distance = map.get(start).unwrap().neighbors.get(target).unwrap();
+
+        if (distance + 1) > minutes {
+            // node is unreachable within our time limit
+            return total;
+        }
+
+        minutes -= distance + 1;
+        total += minutes * rate;
+        remain.remove(target);
+
+        remain
+            .iter()
+            .map(|&next| helper(map, minutes, total, remain.clone(), target, next))
+            .max()
+            .unwrap_or(total)
+    }
+
+    let remain: HashSet<_> = map
+        .iter()
+        .filter_map(|(&key, valve)| if valve.rate > 0 { Some(key) } else { None })
+        .collect();
+
+    let a = map.get(start).expect("Start value does not exist");
+    let max = remain
+        .iter()
+        .filter_map(|&valve| {
+            let rate = map.get(valve).unwrap().rate;
+            let dist = a.neighbors.get(valve).unwrap();
+
+            rate.checked_sub(*dist)
+        })
+        .max()
+        .unwrap();
+
+    remain
+        .iter()
+        .filter_map(|&valve| {
+            let rate = map.get(valve).unwrap().rate;
+            let dist = a.neighbors.get(valve).unwrap();
+
+            rate.checked_sub(*dist)
+                .and_then(|value| if value == max { Some(valve) } else { None })
+        })
+        .map(|target| helper(map, minutes, 0, remain.clone(), start, target))
+        .max()
+        .unwrap()
+}
+
 /// returns the max pressure releasable in 30 minutes.
-pub fn one(file_path: &str) -> usize {
-    todo!();
+pub fn one(file_path: &str) -> u32 {
+    const MINUTES: u32 = 30;
+    const START: &str = "AA";
+    let input = read_file(file_path);
+    let mut valves: HashMap<_, _> = input.lines().map(parse_line).collect();
+
+    valves = find_distances(valves);
+    solve_one(&valves, START, MINUTES)
 }
 
 #[cfg(test)]

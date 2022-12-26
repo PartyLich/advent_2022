@@ -98,6 +98,7 @@ static SOLUTIONS: &[Option<Solution<String>>] = &[
         (day_14::two, "sand fall with floor")
     )),
     Some(to_solution!("15-1", (day_15::one, "beacon free zones"))),
+    Some(to_solution!("16-1", (day_16::one, "volcano graph walk"))),
 ];
 
 /// run a single day
